@@ -13,6 +13,8 @@
        https://developers.google.com/sheets/api/quickstart/js#step_2_set_up_the_sample
     -->
     <script>
+    console.log('test1');  
+    
     function makeApiCall() {
       var params = {
         // The ID of the spreadsheet to retrieve data from.
@@ -85,6 +87,8 @@
     function handleSignOutClick(event) {
       gapi.auth2.getAuthInstance().signOut();
     }
+    
+    console.log('test2');
     </script>
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
