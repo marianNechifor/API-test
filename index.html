@@ -108,11 +108,6 @@
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(getData);
-
-      function getTableData() {
-        const ws = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
-        return ws.getRange(1, 1, ws.getLastRow(), 2);
-      }
       
       function getData() {
         google.script.run.withSuccessHandler(drawChart).getTableData();
