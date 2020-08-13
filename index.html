@@ -100,53 +100,34 @@
     <button id="signin-button" onclick="handleSignInClick()">Sign in</button>
     <button id="signout-button" onclick="handleSignOutClick()">Sign out</button>
 -->
+   
+    <div id="curve_chart" style="width: 900px; height: 500px"></div>
     
-    <button id="authorize-button" style="visibility: hidden">Authorize</button>
-    <script src="https://apis.google.com/js/auth.js?onload=init"></script> 
-    <script>
-      // NOTE: You must replace the client id on the following line.
-var clientId = '241694963114-m3d073v0uppj7f7tv9afa718icnd455s.apps.googleusercontent.com';
-var scopes = 'https://www.googleapis.com/auth/spreadsheets';
+    
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
 
-function init() {
-  gapi.auth.authorize(
-      {client_id: clientId, scope: scopes, immediate: true},
-      handleAuthResult);
-}
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
 
-function handleAuthResult(authResult) {
-  var authorizeButton = document.getElementById('authorize-button');
-  if (authResult && !authResult.error) {
-    authorizeButton.style.visibility = 'hidden';
-    makeApiCall();
-  } else {
-    authorizeButton.style.visibility = '';
-    authorizeButton.onclick = handleAuthClick;
-  }
-}
+        var options = {
+          title: 'Company Performance',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
 
-function handleAuthClick(event) {
-  gapi.auth.authorize(
-      {client_id: clientId, scope: scopes, immediate: false},
-      handleAuthResult);
-  return false;
-}
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 
-function makeApiCall() {
-  // Note: The below spreadsheet is "Public on the web" and will work
-  // with or without an OAuth token.  For a better test, replace this
-  // URL with a private spreadsheet.
-  var tqUrl = 'https://docs.google.com/spreadsheets' +
-      '/d/1TpSYqlcTVC48zeX7w_dLaS8DnlsE8AaN8_OgXKp91uo/gviz/tq' +
-      '?tqx=responseHandler:handleTqResponse' +
-      '&access_token=' + encodeURIComponent(gapi.auth.getToken().access_token);
-
-  document.write('<script src="' + tqUrl +'" type="text/javascript"></script>');
-}
-
-function handleTqResponse(resp) {
-  document.write(JSON.stringify(resp));
-}
+        chart.draw(data, options);
+      }
     </script>
   </body>
 </html>
