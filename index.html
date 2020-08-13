@@ -109,6 +109,11 @@
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(getData);
 
+      function getTableData() {
+        const ws = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+        return ws.getRange(1, 1, ws.getLastRow(), 2);
+      }
+      
       function getData() {
         google.script.run.withSuccessHandler(drawChart).getTableData();
       }
@@ -125,11 +130,6 @@
         var chart = new google.visualization.LineChart(document.getElementById('chart'));
 
         chart.draw(data, options);
-      }
-      
-      function getTableData() {
-        const ws = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
-        return ws.getRange(1, 1, ws.getLastRow(), 2);
       }
     </script>
   </body>
