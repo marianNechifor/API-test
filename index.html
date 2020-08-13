@@ -93,12 +93,9 @@
     function handleSignOutClick(event) {
       gapi.auth2.getAuthInstance().signOut();
     }
-    
-    console.log('test2');
-    </script>
-    
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
+      
+      
+    google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
@@ -114,6 +111,8 @@
 
         chart.draw(data, options);
       }
+    
+    console.log('test2');
     </script>
     
     <script async defer src="https://apis.google.com/js/api.js"
