@@ -101,15 +101,19 @@
     <button id="signout-button" onclick="handleSignOutClick()">Sign out</button>
 -->
    
-    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+    <div id="chart" style="width: 900px; height: 500px"></div>
     
     
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(getData);
 
-      function drawChart() {
+      function getData() {
+        google.script.run.withSuccesHandler(drawChart).getTableData();
+      }
+      
+      function drawChart(dataReturned) {
         var data = google.visualization.arrayToDataTable([
           ['Year', 'Sales', 'Expenses'],
           ['2004',  1000,      400],
@@ -124,9 +128,14 @@
           legend: { position: 'bottom' }
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        var chart = new google.visualization.LineChart(document.getElementById('chart'));
 
         chart.draw(data, options);
+      }
+      
+      function getTableData() {
+        const ws = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+        return ws.getRange(1, 1, ws.getLastRow(), 2);
       }
     </script>
   </body>
