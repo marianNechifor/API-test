@@ -109,6 +109,10 @@
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(getData);
       
+      function doGet() {
+        return HtmlService.createTemplateFromFile("chart").evaluate();
+      }
+      
       function getData() {
         google.script.run.withSuccessHandler(drawChart).getTableData();
       }
