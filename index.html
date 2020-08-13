@@ -1,13 +1,9 @@
 <html>
   <head>
-    <!--Load the AJAX API-->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
   </head>
   <body>
-    <div id="curve_chart" style="width: 900px; height: 500px"></div>
     
-    <!--
+<!--
     BEFORE RUNNING:
     ---------------
     1. If not already done, enable the Google Sheets API
@@ -17,7 +13,7 @@
        https://developers.google.com/api-client-library/javascript/start/start-js#get-access-keys-for-your-application
     3. For additional information on authentication, see
        https://developers.google.com/sheets/api/quickstart/js#step_2_set_up_the_sample
-    -->
+    
     <script>
     console.log('test1');  
     
@@ -103,5 +99,55 @@
     </script>
     <button id="signin-button" onclick="handleSignInClick()">Sign in</button>
     <button id="signout-button" onclick="handleSignOutClick()">Sign out</button>
+-->
+    
+    <button id="authorize-button" style="visibility: hidden">Authorize</button>
+    <script src="./demo.js" type="text/javascript"></script>
+    <script src="https://apis.google.com/js/auth.js?onload=init"></script> 
+    <script>
+      // NOTE: You must replace the client id on the following line.
+var clientId = '241694963114-m3d073v0uppj7f7tv9afa718icnd455s.apps.googleusercontent.com';
+var scopes = 'https://www.googleapis.com/auth/spreadsheets';
+
+function init() {
+  gapi.auth.authorize(
+      {client_id: clientId, scope: scopes, immediate: true},
+      handleAuthResult);
+}
+
+function handleAuthResult(authResult) {
+  var authorizeButton = document.getElementById('authorize-button');
+  if (authResult && !authResult.error) {
+    authorizeButton.style.visibility = 'hidden';
+    makeApiCall();
+  } else {
+    authorizeButton.style.visibility = '';
+    authorizeButton.onclick = handleAuthClick;
+  }
+}
+
+function handleAuthClick(event) {
+  gapi.auth.authorize(
+      {client_id: clientId, scope: scopes, immediate: false},
+      handleAuthResult);
+  return false;
+}
+
+function makeApiCall() {
+  // Note: The below spreadsheet is "Public on the web" and will work
+  // with or without an OAuth token.  For a better test, replace this
+  // URL with a private spreadsheet.
+  var tqUrl = 'https://docs.google.com/spreadsheets' +
+      '/d/1TpSYqlcTVC48zeX7w_dLaS8DnlsE8AaN8_OgXKp91uo' +
+      '?tqx=responseHandler:handleTqResponse' +
+      '&access_token=' + encodeURIComponent(gapi.auth.getToken().access_token);
+
+  document.write('<script src="' + tqUrl +'" type="text/javascript"></script>');
+}
+
+function handleTqResponse(resp) {
+  document.write(JSON.stringify(resp));
+}
+    </script>
   </body>
 </html>
